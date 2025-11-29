@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/pixel_button.dart';
 import 'trading_screen.dart';
-import '../themes/pixel_theme.dart';
 import '../../public/colors.dart';
 import 'email_screen.dart';
 import 'bank_screen.dart';

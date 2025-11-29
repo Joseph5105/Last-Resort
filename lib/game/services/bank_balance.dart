@@ -1,7 +1,7 @@
 import 'package:last_resort/game/services/stock_balance.dart';
 
 class BankBalance {
-  // Singleton implementation (factory + private named constructor)
+  // Singleton
   static final BankBalance _instance = BankBalance._internal();
   factory BankBalance() => _instance;
   BankBalance._internal();
@@ -13,7 +13,7 @@ class BankBalance {
     {"type": "deposit", "amount": 100.0, "note": "Get your money up \n- Mom"},
   ];
 
-  // Methods
+  // Deposit into bank
   void deposit(double amount, String note) {
     balance += amount;
     transactions.insert(0, {
@@ -23,13 +23,20 @@ class BankBalance {
     });
   }
 
-  void sendMoney(double amount, String note) {
+  /// Send money from the bank.
+  /// [toR2R] = true means money goes to the global brokerage account.
+  void sendMoney(double amount, String note, {bool toR2R = true}) {
     balance -= amount;
+
     transactions.insert(0, {
       "type": "sent",
       "amount": amount,
       "note": note,
     });
-    StockBalance().deposit(amount);// Adds money into global brokerage account balance
+
+    // Only deposit into StockBalance if sending to R2R
+    if (toR2R) {
+      StockBalance().deposit(amount);
+    }
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:last_resort/ui/screens/home_screen.dart';
 import '../widgets/pixel_button.dart';
 import 'trading_screen.dart';
-import '../themes/pixel_theme.dart';
 import '../../public/colors.dart';
 import 'dart:io';
 
@@ -21,6 +20,7 @@ void closeApp() {
 void _showWelcomePopup(BuildContext context) {// Popup Function
   showDialog(// showDialog Flutter Function
     context: context,
+    barrierDismissible: false,
     builder: (_) {
       return Dialog(// The Popup Box Itself
         backgroundColor: OldWinColors.background,

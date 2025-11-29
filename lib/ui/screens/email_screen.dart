@@ -3,6 +3,9 @@ import 'package:last_resort/public/colors.dart';
 import '../../public/emails.dart';
 import '../widgets/notification.dart';
 
+/// Global variable to track opened emails across screens
+Set<int> openedEmails = {};
+
 class EmailScreen extends StatefulWidget {
   const EmailScreen({super.key});
 
@@ -17,14 +20,15 @@ class _EmailScreen extends State<EmailScreen> {
 
   @override
   void initState() {
-    if(openedApp == false){
-      super.initState();
+    super.initState();
+
+    if (!openedApp) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showOldWinNotification(
           context: context,
           title: "Tutorial",
           message:
-              "This is your email application here you can recieve emails to learn about the outside world!",
+              "This is your email application! You can receive emails to learn about the outside world.",
         );
       });
       openedApp = true;
@@ -39,7 +43,7 @@ class _EmailScreen extends State<EmailScreen> {
           width: double.infinity,
           height: double.infinity,
           decoration: BoxDecoration(
-            color: const Color(0xFFC0C0C0), // classic win95 grey
+            color: const Color(0xFFC0C0C0),
             border: Border.all(color: Colors.black, width: 3),
           ),
           child: Column(
@@ -57,11 +61,10 @@ class _EmailScreen extends State<EmailScreen> {
     );
   }
 
-  // Title Bar
   Widget _buildWindowTitleBar() {
     return Container(
-      height: 32,
-      color: OldWinColors.blue, // Win95 blue
+      height: 34,
+      color: OldWinColors.blue,
       child: Stack(
         children: [
           const Center(
@@ -105,63 +108,70 @@ class _EmailScreen extends State<EmailScreen> {
     );
   }
 
-  // EMAIL LIST VIEW
   Widget _buildEmailList() {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      child: ListView.builder(
-        itemCount: emails.length,
-        itemBuilder: (context, index) {
-          final email = emails[index];
-          return GestureDetector(
-            onTap: () {
-              setState(() => openedEmailIndex = index);
-            },
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.black, width: 2),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.email, color: Colors.black),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      email["subject"]!,
-                      style: const TextStyle(
-                        fontFamily: "PixelFont",
-                        fontSize: 14,
+    return Center(
+      child: Container(
+        width: 400,
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: ListView.builder(
+          itemCount: emails.length,
+          itemBuilder: (context, index) {
+            final email = emails[index];
+            final bool isOpened = openedEmails.contains(index);
+
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  openedEmailIndex = index;
+                  openedEmails.add(index); // Persist globally
+                });
+              },
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: isOpened ? Colors.white : Colors.yellow[300],
+                  border: Border.all(color: Colors.black, width: 2),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.email, color: Colors.black),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        email["subject"]!,
+                        style: const TextStyle(
+                          fontFamily: "PixelFont",
+                          fontSize: 14,
+                        ),
                       ),
                     ),
-                  ),
-                  const Icon(Icons.arrow_right),
-                ],
+                    const Icon(Icons.arrow_right),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
 
-  // Email Viewer
   Widget _buildOpenedEmail(int index) {
     final email = emails[index];
+    openedEmails.add(index); // mark opened globally
 
     return Column(
-      crossAxisAlignment:
-          CrossAxisAlignment.center, // center main content horizontally
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Align(
-          alignment: Alignment.centerLeft, // aligns only the back button
+          alignment: Alignment.centerLeft,
           child: GestureDetector(
             onTap: () => setState(() => openedEmailIndex = null),
             child: Container(
               margin: const EdgeInsets.all(10),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: Colors.grey[300],
                 border: Border.all(color: Colors.black),
@@ -173,8 +183,6 @@ class _EmailScreen extends State<EmailScreen> {
             ),
           ),
         ),
-
-        // Subject
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
@@ -184,23 +192,18 @@ class _EmailScreen extends State<EmailScreen> {
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
-            textAlign: TextAlign.center, // center subject text
+            textAlign: TextAlign.center,
           ),
         ),
-
-        // Sender
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           child: Text(
             "From: ${email["sender"]}",
             style: const TextStyle(fontFamily: "PixelFont", fontSize: 14),
-            textAlign: TextAlign.center, // center sender text
+            textAlign: TextAlign.center,
           ),
         ),
-
         const Divider(color: Colors.black, thickness: 2),
-
-        // Email Body
         Expanded(
           child: Container(
             padding: const EdgeInsets.all(10),
@@ -209,7 +212,7 @@ class _EmailScreen extends State<EmailScreen> {
               child: Text(
                 email["body"]!,
                 style: const TextStyle(fontFamily: "PixelFont", fontSize: 14),
-                textAlign: TextAlign.center, // center email text
+                textAlign: TextAlign.center,
               ),
             ),
           ),

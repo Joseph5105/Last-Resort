@@ -1,9 +1,31 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../../game/models/stock.dart';
-import '../../../game/services/stock_price_generator.dart';
-import '../../public/colors.dart';
-import '../../game/services/stock_balance.dart';
-import '../widgets/pixel_button.dart';
+import '../../../game/services/stock_market_service.dart';
+import '../../../game/services/stock_balance.dart';
+
+// Imports widgets
+import '../widgets/retro_header.dart';
+import '../widgets/balance_display.dart';
+import '../widgets/top_buttons.dart';
+import '../widgets/withdraw_box.dart';
+import '../widgets/stock_grid.dart';
+import '../widgets/stock_transaction_widget.dart';
+import '../widgets/notification.dart';
+
+// Transaction model
+class Transaction {
+  final String type;
+  final String? stockName;
+  final double amount;
+  final DateTime timestamp;
+
+  Transaction({
+    required this.type,
+    this.stockName,
+    required this.amount,
+    DateTime? timestamp,
+  }) : timestamp = timestamp ?? DateTime.now();
+}
 
 class TradingScreen extends StatefulWidget {
   const TradingScreen({super.key});
@@ -12,218 +34,124 @@ class TradingScreen extends StatefulWidget {
   State<TradingScreen> createState() => _TradingScreenState();
 }
 
+bool openedApp = false;
+
 class _TradingScreenState extends State<TradingScreen> {
-  final generator = StockPriceGenerator();
-  late Stock risky;
-  late Stock safe;
-  late Stock moderate;
-  late Stock bruh;
+  final market = StockMarketService();
+  late StreamSubscription sub;
+
+  bool _showWithdraw = false;
+  final TextEditingController _amountController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    risky = Stock(name: 'Risky Co.', price: 100);
-    safe = Stock(name: 'Safe Co.', price: 100);
-    moderate = Stock(name: 'Moderate Co.', price: 100);
-    bruh = Stock(name: 'bruh Co.', price: 100);
+
+    sub = market.priceUpdates.listen((_) {
+      if (mounted) setState(() {});
+    });
+
+    if (!openedApp) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (_) => OldWinNotificationDialog(
+            title: "Tutorial",
+            message:
+                "Welcome to the Trading Console! Buy low, sell high, and make that MONEY.",
+          ),
+        );
+      });
+      openedApp = true;
+    }
   }
 
-  void updatePrice() {
+  @override
+  void dispose() {
+    sub.cancel();
+    _amountController.dispose();
+    super.dispose();
+  }
+
+  void _handleWithdraw() {
+    final amount = double.tryParse(_amountController.text) ?? 0;
+    if (!StockBalance().withdrawToBank(amount)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red[900],
+          content: const Text(
+            "Invalid amount",
+            style: TextStyle(fontFamily: "PixelFont", color: Colors.white),
+          ),
+        ),
+      );
+      return;
+    }
+
     setState(() {
-      risky = generator.generateNext(risky);
-      safe = generator.generateNext(safe);
-      moderate = generator.generateNext(moderate);
-      bruh = generator.generateNext(bruh);
+      _amountController.clear();
+      _showWithdraw = false;
     });
   }
 
-  bool _showSendMoney = false;
-  final TextEditingController _amountController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final stocks = market.stocks;
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Container(
-        width: size.width,
-        height: size.height,
-        decoration: BoxDecoration(color: Colors.grey[900]),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Custom Title Bar
-            Container(
-              height: 32,
-              color: Colors.red[900],
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Stack(
-                children: [
-                  Center(
-                    child: Text(
-                      "Rags 2 Riches - Trading Console",
-                      style: const TextStyle(
-                        fontFamily: "PixelFont",
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 0,
-                    top: 4,
-                    child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[800],
-                          border: Border.all(color: Colors.black, width: 1),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "X",
-                            style: TextStyle(
-                              fontFamily: "PixelFont",
-                              fontSize: 14,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+      body: Column(
+        children: [
+          RetroHeader(
+            title: "RAGS 2 RICHES — TRADING CONSOLE",
+            onClose: () => Navigator.pop(context),
+          ),
+          const SizedBox(height: 12),
+          BalanceDisplay(),
+          const SizedBox(height: 12),
+          TopButtons(
+            showWithdraw: _showWithdraw,
+            toggleWithdraw: () => setState(() => _showWithdraw = !_showWithdraw),
+          ),
+          if (_showWithdraw)
+            WithdrawBox(
+              controller: _amountController,
+              onConfirm: _handleWithdraw,
             ),
-
-            const SizedBox(height: 30),
-
-            // Brokerage Balance
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    "Brokerage Account Balance",
-                    style: TextStyle(
-                      fontFamily: "PixelFont",
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "\$${StockBalance().balance.toStringAsFixed(2)}",
-                    style: const TextStyle(
-                      fontFamily: "PixelFont",
-                      fontSize: 24,
-                      color: Colors.greenAccent,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-
-            //Withdraw Button
-            Center(
-              child: PixelButton(
-                label: _showSendMoney ? "Cancel" : "Withdraw",
-                onPressed: () {
-                  setState(() => _showSendMoney = !_showSendMoney);
-                },
-              ),
-            ),
-            if (_showSendMoney) ...[
-              const SizedBox(height: 20),
-
-              // INPUT FIELD
-              Center(
-                child: SizedBox(
-                  width: 200,
-                  child: TextField(
-                    controller: _amountController,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(
-                      color: Colors.white, // <-- input text color
-                      fontFamily: "PixelFont",
-                    ),
-                    decoration: InputDecoration(
-                      labelText: "Amount",
-                      labelStyle: const TextStyle(
-                        color: Colors.white, // <-- label text
-                        fontFamily: "PixelFont",
-                      ),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white), // unfocused border
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 2), // focused border
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-
-              const SizedBox(height: 10),
-
-              // CONFIRM SEND BUTTON
-              Center(
-                child: PixelButton(
-                  label: "Confirm",
-                  onPressed: () {
-                    final amount =
-                        double.tryParse(_amountController.text) ?? 0.0;
-
-                    if (amount <= 0 || amount > StockBalance().balance) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: Colors.red[900],
-                          content: const Text(
-                            "Invalid Amount",
-                            style: TextStyle(
-                              fontFamily: "PixelFont",
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      );
-                      return;
-                    }
-
-                    setState(() {
-                      StockBalance().withdraw(amount);
-                    });
-
-                    _amountController.clear();
-                    _showSendMoney = false;
-                  },
-                ),
-              ),
-            ],
-
-            const Spacer(),
-
-            // Stock Row at the bottom
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
+          const SizedBox(height: 12),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                risky.buildWidget(updatePrice),
-                safe.buildWidget(updatePrice),
-                moderate.buildWidget(updatePrice),
-                bruh.buildWidget(updatePrice),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: StockGrid(
+                      stocks: stocks,
+                      onTick: () => market.updateAll(),
+                      onBuy: (name) {
+                        setState(() {
+                          market.buy(name, 1); // StockBalance updates automatically
+                        });
+                      },
+                      onSell: (name) {
+                        setState(() {
+                          market.sell(name, 1); // StockBalance updates automatically
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 200,
+                  child: TransactionLog(
+                    transactions: StockBalance().transactions,
+                  ),
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
