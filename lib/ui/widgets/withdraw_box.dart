@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../game/services/stock_balance.dart';
 import '../widgets/pixel_button.dart';
 
 class WithdrawBox extends StatelessWidget {

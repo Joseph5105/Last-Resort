@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:last_resort/game/services/sfx_service.dart';
+
 import '../models/stock.dart';
 import 'stock_price_generator.dart';
 import 'stock_balance.dart';
@@ -60,6 +62,7 @@ class StockMarketService {
 
     if (StockBalance().buyingStock(cost, stockName)) {
       stock.owned += shares;
+      SfxService().buy();
       return true;
     }
     return false;
@@ -73,6 +76,7 @@ class StockMarketService {
     final amount = stock.price * shares;
     if (StockBalance().sellingStock(amount, stockName)) {
       stock.owned -= shares;
+      SfxService().sell();
       return true;
     }
     return false;

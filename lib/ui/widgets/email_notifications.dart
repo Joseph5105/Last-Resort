@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:last_resort/game/services/sfx_service.dart';
 import '../../public/colors.dart';
 
 class OldWinEmailNotificationDialog extends StatelessWidget {
@@ -76,9 +77,14 @@ void showBottomRightNotification({
   required BuildContext context,
   required String title,
   required String message,
-  Duration duration = const Duration(seconds: 7),
+  Duration duration = const Duration(seconds: 6),
 }) {
   final overlay = Overlay.of(context);
+
+  // Play notification sound AFTER current frame
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    SfxService().notification();
+  });
 
   // Create bottom-right popup
   final overlayEntry = OverlayEntry(
@@ -88,7 +94,6 @@ void showBottomRightNotification({
     ),
   );
 
-  // FIX: overlay can't be null, so remove ?. operator
   overlay.insert(overlayEntry);
 
   // Remove after delay
@@ -96,3 +101,4 @@ void showBottomRightNotification({
     overlayEntry.remove();
   });
 }
+

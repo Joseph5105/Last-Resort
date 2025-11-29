@@ -4,18 +4,20 @@ import '../../game/services/bank_balance.dart';
 import '../widgets/pixel_button.dart';
 import '../widgets/notification.dart';
 import 'package:intl/intl.dart';
-
 class FinFangDebt {
   static final FinFangDebt _instance = FinFangDebt._internal();
   factory FinFangDebt() => _instance;
 
   FinFangDebt._internal() {
     debt = 9644123.82;
+    previousDebt = debt;
   }
 
   late double debt;
+  late double previousDebt;
 
   void pay(double amount) {
+    previousDebt = debt;
     debt -= amount;
     if (debt < 0) debt = 0;
   }
@@ -120,11 +122,21 @@ class _BankScreenState extends State<BankScreen> {
           ),
           const SizedBox(height: 20),
 
-          // Balance
+          // Animated Balance
           Center(
-            child: Text(
-              "Balance: \$${BankBalance().balance.toStringAsFixed(2)}",
-              style: const TextStyle(fontFamily: "PixelFont", fontSize: 45),
+            child: TweenAnimationBuilder<double>(
+              tween: Tween<double>(
+                begin: BankBalance().previousBalance,
+                end: BankBalance().balance,
+              ),
+              duration: const Duration(milliseconds: 500),
+              builder: (context, value, child) {
+                return Text(
+                  "Balance: \$${value.toStringAsFixed(2)}",
+                  style: const TextStyle(
+                      fontFamily: "PixelFont", fontSize: 45),
+                );
+              },
             ),
           ),
           const SizedBox(height: 20),
@@ -135,7 +147,9 @@ class _BankScreenState extends State<BankScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 PixelButton(
-                  label: _currentRecipient == Recipient.r2r ? "Cancel" : "Send Money To R2R",
+                  label: _currentRecipient == Recipient.r2r
+                      ? "Cancel"
+                      : "Send Money To R2R",
                   onPressed: () {
                     setState(() {
                       _currentRecipient = _currentRecipient == Recipient.r2r
@@ -146,7 +160,9 @@ class _BankScreenState extends State<BankScreen> {
                 ),
                 const SizedBox(width: 10),
                 PixelButton(
-                  label: _currentRecipient == Recipient.finFang ? "Cancel" : "Send Money To FinFang",
+                  label: _currentRecipient == Recipient.finFang
+                      ? "Cancel"
+                      : "Send Money To FinFang",
                   onPressed: () {
                     setState(() {
                       _currentRecipient = _currentRecipient == Recipient.finFang
@@ -192,7 +208,8 @@ class _BankScreenState extends State<BankScreen> {
               child: PixelButton(
                 label: "Confirm Send",
                 onPressed: () {
-                  final amount = double.tryParse(_amountController.text) ?? 0.0;
+                  final amount =
+                      double.tryParse(_amountController.text) ?? 0.0;
                   _sendMoney(amount);
                 },
               ),
@@ -201,16 +218,22 @@ class _BankScreenState extends State<BankScreen> {
 
           const SizedBox(height: 20),
 
-          // FinFang Debt Display
+          // Animated FinFang Debt
           Center(
-            child: Text(
-              "Debt to FinFang: \$${NumberFormat('#,###.00').format(FinFangDebt().debt)}",
-              style: const TextStyle(
-                fontFamily: "PixelFont",
-                fontSize: 34,
-                color: Colors.red,
-              ),
-              textAlign: TextAlign.center,
+            child: TweenAnimationBuilder<double>(
+              tween: Tween<double>(
+                  begin: FinFangDebt().previousDebt, end: FinFangDebt().debt),
+              duration: const Duration(milliseconds: 500),
+              builder: (context, value, child) {
+                return Text(
+                  "Debt to FinFang: \$${NumberFormat('#,###.00').format(value)}",
+                  style: const TextStyle(
+                      fontFamily: "PixelFont",
+                      fontSize: 34,
+                      color: Colors.red),
+                  textAlign: TextAlign.center,
+                );
+              },
             ),
           ),
 

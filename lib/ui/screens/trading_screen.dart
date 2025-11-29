@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../game/services/stock_market_service.dart';
 import '../../../game/services/stock_balance.dart';
+import '../../game/services/background_music_service.dart';
+import '../../game/services/main_game_music_service.dart';
 
 // Imports widgets
 import '../widgets/retro_header.dart';
@@ -47,6 +49,10 @@ class _TradingScreenState extends State<TradingScreen> {
   void initState() {
     super.initState();
 
+    MainGameMusicService().pauseBgm();
+    BackgroundMusicService().playBgm();
+
+
     sub = market.priceUpdates.listen((_) {
       if (mounted) setState(() {});
     });
@@ -68,6 +74,8 @@ class _TradingScreenState extends State<TradingScreen> {
 
   @override
   void dispose() {
+    BackgroundMusicService().stopBgm();
+    MainGameMusicService().playBgm();
     sub.cancel();
     _amountController.dispose();
     super.dispose();

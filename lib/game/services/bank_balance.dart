@@ -4,10 +4,13 @@ class BankBalance {
   // Singleton
   static final BankBalance _instance = BankBalance._internal();
   factory BankBalance() => _instance;
-  BankBalance._internal();
+  BankBalance._internal() {
+    previousBalance = balance; // Initialize previous balance
+  }
 
   // Data
   double balance = 100.0;
+  double previousBalance = 100.0; // <-- new field
 
   final List<Map<String, dynamic>> transactions = [
     {"type": "deposit", "amount": 100.0, "note": "Get your money up \n- Mom"},
@@ -15,6 +18,7 @@ class BankBalance {
 
   // Deposit into bank
   void deposit(double amount, String note) {
+    previousBalance = balance; // save previous balance
     balance += amount;
     transactions.insert(0, {
       "type": "deposit",
@@ -26,6 +30,7 @@ class BankBalance {
   /// Send money from the bank.
   /// [toR2R] = true means money goes to the global brokerage account.
   void sendMoney(double amount, String note, {bool toR2R = true}) {
+    previousBalance = balance; // save previous balance
     balance -= amount;
 
     transactions.insert(0, {

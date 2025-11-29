@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import '../widgets/pixel_button.dart';
 import 'trading_screen.dart';
-import '../../public/colors.dart';
 import 'email_screen.dart';
 import 'bank_screen.dart';
 import '../widgets/notification.dart';
 import '../widgets/email_notifications.dart';
+import '../../game/services/main_game_music_service.dart';
 
 class HomeScreen extends StatefulWidget {
   // StatefulWidget
@@ -109,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    MainGameMusicService().playBgm();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showOldWinNotification(
         context: context,
@@ -124,6 +124,12 @@ class _HomeScreenState extends State<HomeScreen> {
         message: "You recieved 1 new email!",
       );
     });
+  }
+
+  @override
+  void dispose() {
+    MainGameMusicService().stopBgm();
+    super.dispose();
   }
 
   @override

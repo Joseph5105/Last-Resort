@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../game/services/stock_market_service.dart';
 import '../widgets/stock_widget.dart';
 
 class StockGrid extends StatelessWidget {
