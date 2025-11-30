@@ -27,15 +27,15 @@ class StockMarketService {
 
   void _init() {
     stocks = {
-      'Wallspire Fortifications Ltd.': Stock(name: 'Wallspire Fortifications Ltd.', price: 96.24),
-      'Helion Dropworks': Stock(name: 'Helion Dropworks', price: 289.52),
-      'Nightspire Recovery Agency': Stock(name: 'Nightspire Recovery Agency', price: 273.43),
-      'Moon Melody Hall': Stock(name: 'Moon Melody Hall', price: 52.13),
+      'Wallspire Fortifications Ltd.': Stock(name: 'Wallspire Fortifications Ltd.', price: 15.65),
+      'Helion Dropworks': Stock(name: 'Helion Dropworks', price: 18.92),
+      'Nightspire Recovery Agency': Stock(name: 'Nightspire Recovery Agency', price: 16.74),
+      'Moon Melody Hall': Stock(name: 'Moon Melody Hall', price: 6.74),
     };
 
     stockGeneratorIndex = {
       'Wallspire Fortifications Ltd.': 1,
-      'Helion Dropworks': 6,
+      'Helion Dropworks': 5,
       'Nightspire Recovery Agency': 7,
       'Moon Melody Hall': 4,
     };
