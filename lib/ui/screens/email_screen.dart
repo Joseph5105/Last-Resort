@@ -189,7 +189,7 @@ class _EmailScreen extends State<EmailScreen> {
             email["subject"]!,
             style: const TextStyle(
               fontFamily: "PixelFont",
-              fontSize: 16,
+              fontSize: 34,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
@@ -211,7 +211,7 @@ class _EmailScreen extends State<EmailScreen> {
             child: SingleChildScrollView(
               child: Text(
                 email["body"]!,
-                style: const TextStyle(fontFamily: "PixelFont", fontSize: 14),
+                style: const TextStyle(fontFamily: "PixelFont", fontSize: 16),
                 textAlign: TextAlign.center,
               ),
             ),

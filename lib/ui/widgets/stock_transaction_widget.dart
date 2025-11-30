@@ -8,7 +8,7 @@ class TransactionLog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200,
+      width: 300,
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         color: Colors.black,
@@ -25,7 +25,7 @@ class TransactionLog extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: "PixelFont",
-                fontSize: 14,
+                fontSize: 18,
                 color: Colors.greenAccent,
               ),
             ),
@@ -50,7 +50,7 @@ class TransactionLog extends StatelessWidget {
                         "${tx.type}${tx.stockName != null ? " ${tx.stockName}" : ""}",
                         style: const TextStyle(
                           fontFamily: "PixelFont",
-                          fontSize: 12,
+                          fontSize: 13,
                           color: Colors.white,
                         ),
                       ),
@@ -58,7 +58,7 @@ class TransactionLog extends StatelessWidget {
                         "\$${tx.amount.toStringAsFixed(2)}",
                         style: const TextStyle(
                           fontFamily: "PixelFont",
-                          fontSize: 12,
+                          fontSize: 16,
                           color: Colors.greenAccent,
                         ),
                       ),

@@ -40,6 +40,7 @@ class SfxService {
 
   // Other SFX remain the same
   Future<void> click() async => playSfx('audio/mouseClick.mp3');
+  Future<void> paidDebt() async => playSfx('audio/paidDebt.wav');
   Future<void> buy() async => playSfx('audio/smallCoin2.wav');
   Future<void> error() async => playSfx('audio/accessDenied.wav');
   Future<void> login() async => playSfx('audio/computerStartup.mp3');

@@ -27,17 +27,17 @@ class StockMarketService {
 
   void _init() {
     stocks = {
-      'Risky Co.': Stock(name: 'Risky Co.', price: 100),
-      'Moderate Co.': Stock(name: 'Moderate Co.', price: 100),
-      'Safe Co.': Stock(name: 'Safe Co.', price: 100),
-      'Bruh Co.': Stock(name: 'Bruh Co.', price: 100),
+      'Wallspire Fortifications Ltd.': Stock(name: 'Wallspire Fortifications Ltd.', price: 96.24),
+      'Helion Dropworks': Stock(name: 'Helion Dropworks', price: 289.52),
+      'Nightspire Recovery Agency': Stock(name: 'Nightspire Recovery Agency', price: 273.43),
+      'Moon Melody Hall': Stock(name: 'Moon Melody Hall', price: 52.13),
     };
 
     stockGeneratorIndex = {
-      'Risky Co.': 6,
-      'Moderate Co.': 4,
-      'Safe Co.': 0,
-      'Bruh Co.': 9,
+      'Wallspire Fortifications Ltd.': 1,
+      'Helion Dropworks': 6,
+      'Nightspire Recovery Agency': 7,
+      'Moon Melody Hall': 4,
     };
 
     _timer = Timer.periodic(tickDuration, (_) => _updatePrices());

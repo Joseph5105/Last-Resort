@@ -29,8 +29,8 @@ Widget stockTradeAppIcon(BuildContext context) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            width: 48,
-            height: 48,
+            width: 70,
+            height: 70,
             child: Image.asset(
               'assets/images/stockAppIcon.png',
               fit: BoxFit.contain,
@@ -59,8 +59,8 @@ Widget bankAppIcon(BuildContext context) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            width: 48,
-            height: 48,
+            width: 60,
+            height: 60,
             child: Image.asset(
               'assets/images/bankAppIcon.png',
               fit: BoxFit.contain,
@@ -89,8 +89,8 @@ Widget emailAppIcon(BuildContext context) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            width: 48,
-            height: 48,
+            width: 60,
+            height: 60,
             child: Image.asset(
               'assets/images/emailAppIcon.png',
               fit: BoxFit.contain,
@@ -145,9 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          Positioned(top: 40, left: 20, child: stockTradeAppIcon(context)),
-          Positioned(top: 40, left: 100, child: bankAppIcon(context)),
-          Positioned(top: 40, left: 190, child: emailAppIcon(context)),
+          Positioned(top: 36, left: 50, child: stockTradeAppIcon(context)),
+          Positioned(top: 40, left: 140, child: bankAppIcon(context)),
+          Positioned(top: 40, left: 230, child: emailAppIcon(context)),
         ],
       ),
     );

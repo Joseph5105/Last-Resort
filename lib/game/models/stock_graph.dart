@@ -14,11 +14,20 @@ class StockGraph extends StatelessWidget {
     final maxPrice = history.reduce((a, b) => a > b ? a : b);
     final minPrice = history.reduce((a, b) => a < b ? a : b);
 
+    final double initialPrice = history.first;
+    final double currentPrice = history.last;
+    final bool isDown = currentPrice < initialPrice;
+
     return SizedBox(
       height: 60,
       width: double.infinity,
       child: CustomPaint(
-        painter: _GraphPainter(history, minPrice, maxPrice),
+        painter: _GraphPainter(
+          history: history,
+          min: minPrice,
+          max: maxPrice,
+          isDown: isDown,
+        ),
       ),
     );
   }
@@ -28,21 +37,28 @@ class _GraphPainter extends CustomPainter {
   final List<double> history;
   final double min;
   final double max;
+  final bool isDown;
 
-  _GraphPainter(this.history, this.min, this.max);
+  _GraphPainter({
+    required this.history,
+    required this.min,
+    required this.max,
+    required this.isDown,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.greenAccent
+      ..color = isDown ? Colors.redAccent : Colors.greenAccent
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
     final path = Path();
 
     for (int i = 0; i < history.length; i++) {
-      final x = (i / (history.length - 1)) * size.width;
-      final y = size.height -
+      final double x = (i / (history.length - 1)) * size.width;
+
+      final double y = size.height -
           ((history[i] - min) / ((max - min).abs() + 0.01)) * size.height;
 
       if (i == 0) {

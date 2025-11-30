@@ -78,6 +78,7 @@ flutter:
     - assets/audio/mainGameMusic.wav
     - assets/audio/cashRegister.wav
     - assets/audio/smallCoin2.wav
+    - assets/audio/paidDebt.wav
 
 
 

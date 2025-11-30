@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:last_resort/game/services/sfx_service.dart';
 import '../../public/colors.dart';
 import '../../game/services/bank_balance.dart';
 import '../widgets/pixel_button.dart';
@@ -208,6 +209,7 @@ class _BankScreenState extends State<BankScreen> {
               child: PixelButton(
                 label: "Confirm Send",
                 onPressed: () {
+                SfxService().paidDebt();
                   final amount =
                       double.tryParse(_amountController.text) ?? 0.0;
                   _sendMoney(amount);
