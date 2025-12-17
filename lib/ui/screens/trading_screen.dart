@@ -52,7 +52,6 @@ class _TradingScreenState extends State<TradingScreen> {
     MainGameMusicService().pauseBgm();
     BackgroundMusicService().playBgm();
 
-
     sub = market.priceUpdates.listen((_) {
       if (mounted) setState(() {});
     });
@@ -119,7 +118,8 @@ class _TradingScreenState extends State<TradingScreen> {
           const SizedBox(height: 12),
           TopButtons(
             showWithdraw: _showWithdraw,
-            toggleWithdraw: () => setState(() => _showWithdraw = !_showWithdraw),
+            toggleWithdraw: () =>
+                setState(() => _showWithdraw = !_showWithdraw),
           ),
           if (_showWithdraw)
             WithdrawBox(
@@ -139,12 +139,18 @@ class _TradingScreenState extends State<TradingScreen> {
                       onTick: () => market.updateAll(),
                       onBuy: (name) {
                         setState(() {
-                          market.buy(name, 1); // StockBalance updates automatically
+                          market.buy(
+                            name,
+                            1,
+                          ); // StockBalance updates automatically
                         });
                       },
                       onSell: (name) {
                         setState(() {
-                          market.sell(name, 1); // StockBalance updates automatically
+                          market.sell(
+                            name,
+                            1,
+                          ); // StockBalance updates automatically
                         });
                       },
                     ),

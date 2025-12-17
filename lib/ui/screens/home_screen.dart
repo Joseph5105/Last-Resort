@@ -5,6 +5,8 @@ import 'bank_screen.dart';
 import '../widgets/notification.dart';
 import '../widgets/email_notifications.dart';
 import '../../game/services/main_game_music_service.dart';
+import 'backend_market_screen.dart';
+import '../../game/services/backend_inventory_service.dart';
 
 class HomeScreen extends StatefulWidget {
   // StatefulWidget
@@ -104,6 +106,29 @@ Widget emailAppIcon(BuildContext context) {
   );
 }
 
+Widget backendMarketAppIcon(BuildContext context) {
+  return GestureDetector(
+    onDoubleTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const BackendMarketScreen()),
+      ).then((_) {
+        (context as Element).markNeedsBuild();
+      });
+    },
+    child: Column(
+      children: [
+        Image.asset(
+          'assets/images/marketAppIcon.png',
+          width: 60,
+        ),
+        const Text("Backend Market", style: TextStyle(color: Colors.white)),
+      ],
+    ),
+  );
+}
+
+
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
@@ -125,6 +150,8 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     });
   }
+
+  final BackendInventoryService inventory = BackendInventoryService();
 
   @override
   void dispose() {
@@ -148,6 +175,23 @@ class _HomeScreenState extends State<HomeScreen> {
           Positioned(top: 36, left: 50, child: stockTradeAppIcon(context)),
           Positioned(top: 40, left: 140, child: bankAppIcon(context)),
           Positioned(top: 40, left: 230, child: emailAppIcon(context)),
+          Positioned(top: 50, left: 330, child: backendMarketAppIcon(context)),
+          Positioned(
+            bottom: 16,
+            left: 16,
+            child: Row(
+              children: inventory.items.map((item) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: Image.asset(
+                    item.imagePath,
+                    width: 100,
+                    height: 100,
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
         ],
       ),
     );

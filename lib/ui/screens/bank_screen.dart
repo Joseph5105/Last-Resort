@@ -5,6 +5,7 @@ import '../../game/services/bank_balance.dart';
 import '../widgets/pixel_button.dart';
 import '../widgets/notification.dart';
 import 'package:intl/intl.dart';
+
 class FinFangDebt {
   static final FinFangDebt _instance = FinFangDebt._internal();
   factory FinFangDebt() => _instance;
@@ -69,11 +70,7 @@ class _BankScreenState extends State<BankScreen> {
           toR2R: true,
         );
       } else if (_currentRecipient == Recipient.finFang) {
-        BankBalance().sendMoney(
-          amount,
-          "Sent to FinFang",
-          toR2R: false,
-        );
+        BankBalance().sendMoney(amount, "Sent to FinFang", toR2R: false);
         FinFangDebt().pay(amount);
       }
 
@@ -134,8 +131,7 @@ class _BankScreenState extends State<BankScreen> {
               builder: (context, value, child) {
                 return Text(
                   "Balance: \$${value.toStringAsFixed(2)}",
-                  style: const TextStyle(
-                      fontFamily: "PixelFont", fontSize: 45),
+                  style: const TextStyle(fontFamily: "PixelFont", fontSize: 45),
                 );
               },
             ),
@@ -209,9 +205,8 @@ class _BankScreenState extends State<BankScreen> {
               child: PixelButton(
                 label: "Confirm Send",
                 onPressed: () {
-                SfxService().paidDebt();
-                  final amount =
-                      double.tryParse(_amountController.text) ?? 0.0;
+                  SfxService().paidDebt();
+                  final amount = double.tryParse(_amountController.text) ?? 0.0;
                   _sendMoney(amount);
                 },
               ),
@@ -224,15 +219,18 @@ class _BankScreenState extends State<BankScreen> {
           Center(
             child: TweenAnimationBuilder<double>(
               tween: Tween<double>(
-                  begin: FinFangDebt().previousDebt, end: FinFangDebt().debt),
+                begin: FinFangDebt().previousDebt,
+                end: FinFangDebt().debt,
+              ),
               duration: const Duration(milliseconds: 500),
               builder: (context, value, child) {
                 return Text(
                   "Debt to FinFang: \$${NumberFormat('#,###.00').format(value)}",
                   style: const TextStyle(
-                      fontFamily: "PixelFont",
-                      fontSize: 34,
-                      color: Colors.red),
+                    fontFamily: "PixelFont",
+                    fontSize: 34,
+                    color: Colors.red,
+                  ),
                   textAlign: TextAlign.center,
                 );
               },

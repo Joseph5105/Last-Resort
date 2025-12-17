@@ -24,11 +24,7 @@ class RetroButton extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: TextStyle(
-            fontFamily: "PixelFont",
-            fontSize: 14,
-            color: color,
-          ),
+          style: TextStyle(fontFamily: "PixelFont", fontSize: 14, color: color),
         ),
       ),
     );

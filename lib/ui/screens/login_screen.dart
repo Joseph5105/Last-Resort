@@ -74,12 +74,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: BoxDecoration(
                                 color: OldWinColors.buttonLight,
                                 border: Border(
-                                  top: BorderSide(color: Colors.white, width: 3),
-                                  left: BorderSide(color: Colors.white, width: 3),
+                                  top: BorderSide(
+                                    color: Colors.white,
+                                    width: 3,
+                                  ),
+                                  left: BorderSide(
+                                    color: Colors.white,
+                                    width: 3,
+                                  ),
                                   bottom: BorderSide(
-                                      color: OldWinColors.buttonDark, width: 3),
+                                    color: OldWinColors.buttonDark,
+                                    width: 3,
+                                  ),
                                   right: BorderSide(
-                                      color: OldWinColors.buttonDark, width: 3),
+                                    color: OldWinColors.buttonDark,
+                                    width: 3,
+                                  ),
                                 ),
                               ),
                               child: const Center(
@@ -123,7 +133,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => const HomeScreen()),
+                                  builder: (_) => const HomeScreen(),
+                                ),
                               );
                             },
                           ),

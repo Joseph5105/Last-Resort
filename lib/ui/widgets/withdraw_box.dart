@@ -41,10 +41,7 @@ class WithdrawBox extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        PixelButton(
-          label: "Confirm",
-          onPressed: onConfirm,
-        ),
+        PixelButton(label: "Confirm", onPressed: onConfirm),
       ],
     );
   }

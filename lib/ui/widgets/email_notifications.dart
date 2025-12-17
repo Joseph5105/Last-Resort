@@ -14,7 +14,8 @@ class OldWinEmailNotificationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IgnorePointer( // <-- DOES NOT BLOCK TOUCHES
+    return IgnorePointer(
+      // <-- DOES NOT BLOCK TOUCHES
       ignoring: true,
       child: Material(
         color: Colors.transparent,
@@ -39,10 +40,7 @@ class OldWinEmailNotificationDialog extends StatelessWidget {
                   child: Center(
                     child: Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -88,10 +86,8 @@ void showBottomRightNotification({
 
   // Create bottom-right popup
   final overlayEntry = OverlayEntry(
-    builder: (_) => OldWinEmailNotificationDialog(
-      title: title,
-      message: message,
-    ),
+    builder: (_) =>
+        OldWinEmailNotificationDialog(title: title, message: message),
   );
 
   overlay.insert(overlayEntry);
@@ -101,4 +97,3 @@ void showBottomRightNotification({
     overlayEntry.remove();
   });
 }
-

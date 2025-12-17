@@ -63,7 +63,7 @@ class TransactionLog extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "${tx.timestamp.hour.toString().padLeft(2,'0')}:${tx.timestamp.minute.toString().padLeft(2,'0')}:${tx.timestamp.second.toString().padLeft(2,'0')}",
+                        "${tx.timestamp.hour.toString().padLeft(2, '0')}:${tx.timestamp.minute.toString().padLeft(2, '0')}:${tx.timestamp.second.toString().padLeft(2, '0')}",
                         style: const TextStyle(
                           fontFamily: "PixelFont",
                           fontSize: 12,

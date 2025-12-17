@@ -170,8 +170,7 @@ class _EmailScreen extends State<EmailScreen> {
             onTap: () => setState(() => openedEmailIndex = null),
             child: Container(
               margin: const EdgeInsets.all(10),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: Colors.grey[300],
                 border: Border.all(color: Colors.black),

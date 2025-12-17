@@ -8,32 +8,56 @@ class StockPriceGenerator {
   StockPriceGenerator({required this.riskLevel});
 
   double nextPrice(Stock s) {
-    // 1. Base volatility (small swings for all)
-    double baseMinVol = 0.001; // 0.1%
-    double baseMaxVol = 0.10;  // 10%
-    double volatility = baseMinVol + _rng.nextDouble() * (baseMaxVol - baseMinVol);
+    double price = s.price;
 
-    // 2. Apply rare risk-based spikes
-    double spikeChance = riskLevel * 0.01; // 1% → 10%
-    if (_rng.nextDouble() < spikeChance) {
-      double spikeMultiplier = 1 + _rng.nextDouble() * riskLevel * 0.1; // 1x → 2x+
-      volatility *= spikeMultiplier;
+    /* --------------------------------------------------
+       1. Base volatility scales with price LEVEL, not %
+       -------------------------------------------------- */
+    double dollarVolatility;
+
+    if (price < 1.0) {
+      // Stronger absolute movement to escape penny hell
+      dollarVolatility = 0.05 + riskLevel * 0.03; // up to ~0.35
+    } else if (price < 10.0) {
+      dollarVolatility = price * (0.015 + riskLevel * 0.004);
+    } else {
+      dollarVolatility = price * (0.01 + riskLevel * 0.003);
     }
 
-    // 3. Bias direction if price < $1
-    double upProbability = s.price < 1.0 ? 0.7 : 0.5; // 70% chance to go up if cheap
+    /* --------------------------------------------------
+       2. Slight positive market bias
+       -------------------------------------------------- */
+    double upProbability = 0.52; // default optimism
+
+    if (price < 1.0) upProbability = 0.70;      // strong recovery bias
+    else if (price < 5.0) upProbability = 0.58; // mild recovery bias
+
     double direction = _rng.nextDouble() < upProbability ? 1 : -1;
 
-    // 4. Calculate delta and clamp to avoid crashes
-    double delta = s.price * volatility * direction;
-    double maxDelta = s.price * 0.5; // can't move more than 50% in one tick
-    delta = delta.clamp(-maxDelta, maxDelta);
+    /* --------------------------------------------------
+       3. Risk-based spikes (whole-dollar movers)
+       -------------------------------------------------- */
+    if (_rng.nextDouble() < riskLevel * 0.02) {
+      double spike = (0.2 + _rng.nextDouble()) * riskLevel;
+      dollarVolatility += spike;
+    }
 
-    // 5. Final price
-    double next = s.price + delta;
-    next = next.clamp(0.01, double.infinity);
+    /* --------------------------------------------------
+       4. Apply movement
+       -------------------------------------------------- */
+    double delta = dollarVolatility * direction;
 
-    // 6. Update stock history
+    /* --------------------------------------------------
+       5. Clamp extreme crashes but allow growth
+       -------------------------------------------------- */
+    //double maxDrop = price * 0.4; // can't lose more than 40% in one tick
+    //delta = delta.clamp(-maxDrop, double.infinity);
+
+   double next = (price + delta).clamp(0.01, double.infinity);
+
+    /* --------------------------------------------------
+       6. Update stock (round for realism)
+       -------------------------------------------------- */
     s.updatePrice(double.parse(next.toStringAsFixed(2)));
 
     return s.price;

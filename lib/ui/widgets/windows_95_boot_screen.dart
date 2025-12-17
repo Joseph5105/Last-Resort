@@ -21,14 +21,17 @@ class _Win95BootScreenState extends State<Win95BootScreen>
 
     // Fade animation
     _fadeController = AnimationController(
-        vsync: this, duration: const Duration(seconds: 1));
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_fadeController);
     _fadeController.forward();
 
     // Loading bar animation
-    _loadingController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 4))
-          ..repeat();
+    _loadingController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    )..repeat();
 
     // Play boot sound effect
     SfxService().login();
@@ -71,17 +74,16 @@ class _Win95BootScreenState extends State<Win95BootScreen>
                     child: Text(
                       "Burned Sand 95",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
                   "Starting Burned Sand...",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 25),
                 Container(
@@ -96,7 +98,9 @@ class _Win95BootScreenState extends State<Win95BootScreen>
                     builder: (_, __) {
                       return Align(
                         alignment: Alignment(
-                            -1 + (_loadingController.value * 2), 0),
+                          -1 + (_loadingController.value * 2),
+                          0,
+                        ),
                         child: Container(
                           width: 70,
                           height: 20,

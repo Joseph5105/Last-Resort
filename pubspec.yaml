@@ -68,6 +68,26 @@ flutter:
     - assets/images/stockAppIcon.png
     - assets/images/bankAppIcon.png
     - assets/images/emailAppIcon.png
+    - assets/images/marketAppIcon.png
+    - assets/images/AnyTbh.png
+    - assets/images/BlackmailRelease.png
+    - assets/images/BlackmailRelease2.png
+    - assets/images/DarkPoolAccess.png
+    - assets/images/DataPoison.png
+    - assets/images/DataPoison50.png
+    - assets/images/FreezeMarket.png
+    - assets/images/LatencyInjector.png
+    - assets/images/LatencyLag.png
+    - assets/images/packet.png
+    - assets/images/PacketSniffer.png
+    - assets/images/RollBackPatch.png
+    - assets/images/RollbackPatch2.png
+    - assets/images/SandBoxEscape.png
+    - assets/images/Spoof.png
+    - assets/images/SpoofOrders.png
+    - assets/images/UIPriceInjector.png
+    - assets/images/TrojanDemover.png
+    - assets/images/TrojanDeposit.png
     - assets/audio/tradingScreen1.wav
     - assets/audio/tradingScreen2.wav
     - assets/audio/mouseClick.mp3
@@ -79,6 +99,7 @@ flutter:
     - assets/audio/cashRegister.wav
     - assets/audio/smallCoin2.wav
     - assets/audio/paidDebt.wav
+    - assets/audio/marketMusic.wav
 
 
 

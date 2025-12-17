@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../public/colors.dart';
 
-
 class PixelButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
@@ -31,10 +30,7 @@ class PixelButton extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: TextStyle(
-            fontFamily: "PixelFont",
-            color: textColor,
-          ),
+          style: TextStyle(fontFamily: "PixelFont", color: textColor),
         ),
       ),
     );

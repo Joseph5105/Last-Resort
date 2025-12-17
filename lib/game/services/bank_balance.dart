@@ -9,11 +9,11 @@ class BankBalance {
   }
 
   // Data
-  double balance = 100.0;
-  double previousBalance = 100.0; // <-- new field
+  double balance = 1000.0;
+  double previousBalance = 1000.0; // <-- new field
 
   final List<Map<String, dynamic>> transactions = [
-    {"type": "deposit", "amount": 100.0, "note": "Get your money up \n- Mom"},
+    {"type": "deposit", "amount": 1000.0, "note": "Get your money up \n- Mom"},
   ];
 
   // Deposit into bank
