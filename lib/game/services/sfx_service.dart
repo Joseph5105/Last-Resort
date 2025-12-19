@@ -45,6 +45,9 @@ class SfxService {
   Future<void> error() async => playSfx('audio/accessDenied.wav');
   Future<void> login() async => playSfx('audio/computerStartup.mp3');
   Future<void> notification() async => playSfx('audio/notification.mp3');
+  Future<void> gunshot() async => playSfx('audio/gunshot.wav');
+  Future<void> sharkCharge() async => playSfx('audio/shark.wav');
+
 
 
 }

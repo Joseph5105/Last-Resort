@@ -5,13 +5,14 @@ import '../../game/services/bank_balance.dart';
 import '../widgets/pixel_button.dart';
 import '../widgets/notification.dart';
 import 'package:intl/intl.dart';
+import '../../game/services/finfang_shark_event_service.dart';
 
 class FinFangDebt {
   static final FinFangDebt _instance = FinFangDebt._internal();
   factory FinFangDebt() => _instance;
 
   FinFangDebt._internal() {
-    debt = 9644123.82;
+    debt = 98765.82;
     previousDebt = debt;
   }
 
@@ -43,6 +44,7 @@ class _BankScreenState extends State<BankScreen> {
   @override
   void initState() {
     super.initState();
+
     if (!openedApp) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showOldWinNotification(
@@ -118,27 +120,32 @@ class _BankScreenState extends State<BankScreen> {
               ],
             ),
           ),
+
           const SizedBox(height: 20),
 
           // Animated Balance
           Center(
             child: TweenAnimationBuilder<double>(
-              tween: Tween<double>(
+              tween: Tween(
                 begin: BankBalance().previousBalance,
                 end: BankBalance().balance,
               ),
               duration: const Duration(milliseconds: 500),
-              builder: (context, value, child) {
+              builder: (_, value, __) {
                 return Text(
                   "Balance: \$${value.toStringAsFixed(2)}",
-                  style: const TextStyle(fontFamily: "PixelFont", fontSize: 45),
+                  style: const TextStyle(
+                    fontFamily: "PixelFont",
+                    fontSize: 45,
+                  ),
                 );
               },
             ),
           ),
+
           const SizedBox(height: 20),
 
-          // Send Money Buttons
+          // Send Buttons
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -149,9 +156,10 @@ class _BankScreenState extends State<BankScreen> {
                       : "Send Money To R2R",
                   onPressed: () {
                     setState(() {
-                      _currentRecipient = _currentRecipient == Recipient.r2r
-                          ? Recipient.none
-                          : Recipient.r2r;
+                      _currentRecipient =
+                          _currentRecipient == Recipient.r2r
+                              ? Recipient.none
+                              : Recipient.r2r;
                     });
                   },
                 ),
@@ -162,9 +170,10 @@ class _BankScreenState extends State<BankScreen> {
                       : "Send Money To FinFang",
                   onPressed: () {
                     setState(() {
-                      _currentRecipient = _currentRecipient == Recipient.finFang
-                          ? Recipient.none
-                          : Recipient.finFang;
+                      _currentRecipient =
+                          _currentRecipient == Recipient.finFang
+                              ? Recipient.none
+                              : Recipient.finFang;
                     });
                   },
                 ),
@@ -179,16 +188,15 @@ class _BankScreenState extends State<BankScreen> {
                 width: 200,
                 child: TextField(
                   controller: _amountController,
-                  cursorColor: Colors.black,
                   style: const TextStyle(
-                    color: Colors.black,
                     fontFamily: "PixelFont",
+                    color: Colors.black,
                   ),
                   decoration: const InputDecoration(
                     labelText: "Amount",
                     labelStyle: TextStyle(
-                      color: Colors.black,
                       fontFamily: "PixelFont",
+                      color: Colors.black,
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
@@ -206,7 +214,8 @@ class _BankScreenState extends State<BankScreen> {
                 label: "Confirm Send",
                 onPressed: () {
                   SfxService().paidDebt();
-                  final amount = double.tryParse(_amountController.text) ?? 0.0;
+                  final amount =
+                      double.tryParse(_amountController.text) ?? 0.0;
                   _sendMoney(amount);
                 },
               ),
@@ -218,20 +227,28 @@ class _BankScreenState extends State<BankScreen> {
           // Animated FinFang Debt
           Center(
             child: TweenAnimationBuilder<double>(
-              tween: Tween<double>(
+              tween: Tween(
                 begin: FinFangDebt().previousDebt,
                 end: FinFangDebt().debt,
               ),
               duration: const Duration(milliseconds: 500),
-              builder: (context, value, child) {
+              builder: (context, value, _) {
+                // ✅ SAFE SHARK TRIGGER
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  FinFangSharkEventService().tryTrigger(
+                    context: context,
+                    debt: value,
+                  );
+                });
+
                 return Text(
                   "Debt to FinFang: \$${NumberFormat('#,###.00').format(value)}",
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontFamily: "PixelFont",
                     fontSize: 34,
                     color: Colors.red,
                   ),
-                  textAlign: TextAlign.center,
                 );
               },
             ),
@@ -246,34 +263,31 @@ class _BankScreenState extends State<BankScreen> {
               style: TextStyle(fontFamily: "PixelFont", fontSize: 16),
             ),
           ),
+
           const SizedBox(height: 10),
+
           Expanded(
-            child: Center(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: BankBalance().transactions.length,
-                itemBuilder: (_, index) {
-                  final t = BankBalance().transactions[index];
-                  return Center(
-                    child: ListTile(
-                      title: Text(
-                        "${t["type"] == "sent" ? 'Sent' : 'Deposit'} "
-                        "\$${t["amount"].toStringAsFixed(2)}",
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontFamily: "PixelFont"),
-                      ),
-                      subtitle: Text(
-                        t["note"],
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontFamily: "PixelFont",
-                          fontSize: 12,
-                        ),
-                      ),
+            child: ListView.builder(
+              itemCount: BankBalance().transactions.length,
+              itemBuilder: (_, index) {
+                final t = BankBalance().transactions[index];
+                return ListTile(
+                  title: Text(
+                    "${t["type"] == "sent" ? 'Sent' : 'Deposit'} "
+                    "\$${t["amount"].toStringAsFixed(2)}",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontFamily: "PixelFont"),
+                  ),
+                  subtitle: Text(
+                    t["note"],
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontFamily: "PixelFont",
+                      fontSize: 12,
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
         ],

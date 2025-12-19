@@ -24,7 +24,7 @@ Widget stockTradeAppIcon(BuildContext context) {
         MaterialPageRoute(builder: (context) => const TradingScreen()),
       );
     },
-    child: Container(
+    child: SizedBox(
       width: 100,
       height: 100,
       child: Column(
@@ -54,7 +54,7 @@ Widget bankAppIcon(BuildContext context) {
         MaterialPageRoute(builder: (context) => const BankScreen()),
       );
     },
-    child: Container(
+    child: SizedBox(
       width: 100,
       height: 100,
       child: Column(
@@ -84,7 +84,7 @@ Widget emailAppIcon(BuildContext context) {
         MaterialPageRoute(builder: (context) => const EmailScreen()),
       );
     },
-    child: Container(
+    child: SizedBox(
       width: 100,
       height: 100,
       child: Column(

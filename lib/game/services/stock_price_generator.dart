@@ -29,8 +29,9 @@ class StockPriceGenerator {
        -------------------------------------------------- */
     double upProbability = 0.52; // default optimism
 
-    if (price < 1.0) upProbability = 0.70;      // strong recovery bias
-    else if (price < 5.0) upProbability = 0.58; // mild recovery bias
+    if (price < 1.0) {
+      upProbability = 0.70;      // strong recovery bias
+    } else if (price < 5.0) upProbability = 0.58; // mild recovery bias
 
     double direction = _rng.nextDouble() < upProbability ? 1 : -1;
 

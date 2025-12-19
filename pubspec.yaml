@@ -78,6 +78,7 @@ flutter:
     - assets/images/FreezeMarket.png
     - assets/images/LatencyInjector.png
     - assets/images/LatencyLag.png
+    - assets/images/Shark.png
     - assets/images/packet.png
     - assets/images/PacketSniffer.png
     - assets/images/RollBackPatch.png
@@ -100,6 +101,8 @@ flutter:
     - assets/audio/smallCoin2.wav
     - assets/audio/paidDebt.wav
     - assets/audio/marketMusic.wav
+    - assets/audio/gunshot.wav
+    - assets/audio/shark.wav
 
 
 

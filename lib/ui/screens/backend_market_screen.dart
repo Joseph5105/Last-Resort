@@ -17,6 +17,8 @@ class BackendMarketScreen extends StatefulWidget {
   State<BackendMarketScreen> createState() => _BackendMarketScreenState();
 }
 
+  bool openedApp = false;
+
 class _BackendMarketScreenState extends State<BackendMarketScreen> {
   final BackendInventoryService inventory = BackendInventoryService();
   final BackendEffectService effectService = BackendEffectService();
@@ -35,10 +37,8 @@ class _BackendMarketScreenState extends State<BackendMarketScreen> {
     bank.sendMoney(item.price, "Purchased ${item.name}", toR2R: false);
     inventory.addItem(item.id);
 
-    if (item.effect != null) {
-      effectService.apply(item.effect!);
-    }
-
+    effectService.apply(item.effect!);
+  
     _showNotification(
       "Purchase Successful",
       "${item.name} added to inventory.",
@@ -84,6 +84,17 @@ class _BackendMarketScreenState extends State<BackendMarketScreen> {
     super.initState();
     MainGameMusicService().pauseBgm();
     MarketMusicService().playBgm();
+    if (!openedApp) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showOldWinNotification(
+          context: context,
+          title: "Tutorial",
+          message:
+              "This is the Backend Market! Don't tell anyone...but people working at R&R got fired and opened this backend market to get back at them. Buy wisely.",
+        );
+      });
+      openedApp = true;
+    }
   }
 
   @override
