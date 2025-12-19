@@ -22,7 +22,7 @@ final List<BackendItem> backendMarketItems = [
     id: 'trojan_deposit',
     name: 'Trojan Deposit',
     description: 'Upload a payload of \$20,000 into R&R account',
-    price: 1200,
+    price: 10000,
     imagePath: 'assets/images/TrojanDeposit.png',
     effect: BackendItemEffect.trojanDeposit,
   ),
@@ -30,7 +30,7 @@ final List<BackendItem> backendMarketItems = [
     id: 'market_freeze',
     name: 'Freeze Market',
     description: 'Disrupt R&R servers for 60 seconds',
-    price: 1200,
+    price: 400,
     imagePath: 'assets/images/FreezeMarket.png',
     effect: BackendItemEffect.marketFreeze,
   ),
@@ -40,7 +40,7 @@ final List<BackendItem> backendMarketItems = [
     id: 'latency_injector',
     name: 'Latency Injector',
     description: 'Introduce artificial lag (10s) into trade execution',
-    price: 900,
+    price: 100,
     imagePath: 'assets/images/LatencyInjector.png',
     effect: BackendItemEffect.latencyInject, // Apply 2s delay once
   ),
@@ -48,7 +48,7 @@ final List<BackendItem> backendMarketItems = [
     id: 'packet_sniffer',
     name: 'Packet Sniffer',
     description: 'Doubles all stock prices',
-    price: 700,
+    price: 9000,
     imagePath: 'assets/images/PacketSniffer.png',
     effect: BackendItemEffect.packetSniff, // Sets bias on next tick
   ),
@@ -80,7 +80,7 @@ final List<BackendItem> backendMarketItems = [
     id: 'Blackmail Release',
     name: 'BlackMail Release',
     description: 'Gradually crash every stock market to the ground.',
-    price: 950,
+    price: 8000,
     imagePath: 'assets/images/BlackmailRelease.png',
     effect: BackendItemEffect.clockSkew, // Modify tick rate temporarily
   ),
@@ -88,7 +88,7 @@ final List<BackendItem> backendMarketItems = [
     id: 'sandbox_escape',
     name: 'Sandbox Escape',
     description: 'Allow unlimited buying for 30s',
-    price: 1700,
+    price: 50000,
     imagePath: 'assets/images/SandBoxEscape.png',
     effect: BackendItemEffect.sandboxEscape, // Enable unlimited buying
   ),
@@ -96,7 +96,7 @@ final List<BackendItem> backendMarketItems = [
     id: 'dark_pool_access',
     name: 'Dark Pool Access',
     description: 'Gain 1.5x profit for 30s',
-    price: 1900,
+    price: 49000,
     imagePath: 'assets/images/DarkPoolAccess.png',
     effect: BackendItemEffect.darkPoolAccess, // Profit multiplier
   ),

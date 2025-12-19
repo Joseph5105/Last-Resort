@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'app/game_app.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
+
 
 void main() {
   runApp(const GameApp());
 
-  /*doWhenWindowReady(() {
+  doWhenWindowReady(() {
     //displays window center on startup
     appWindow.alignment = Alignment.center;
     
@@ -19,5 +21,5 @@ void main() {
     // Show the window
     appWindow.show();
 
-  });*/
+  });
 }
